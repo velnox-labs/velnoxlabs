@@ -2,6 +2,10 @@
    VELNOX LABS — App logic
    ========================================================================== */
 
+const SUPABASE_URL="https://fevujjvpmehimeajbsez.supabase.co";
+const SUPABASE_KEY="sb_publishable_f8idRLFwQXZ4FvEdpoIdGA_WSk8jc4o";
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 /* ---------------------------- DATA ---------------------------- */
 
 const SERVICES = [
@@ -540,7 +544,7 @@ function initOrderForm(){
     el.addEventListener('input', ()=>{ if(el.closest('.form-field').classList.contains('invalid')) validateField(id); });
   });
 
-  form.addEventListener('submit', e=>{
+  form.addEventListener('submit', async e=>{
     e.preventDefault();
     let allValid = true;
     Object.keys(fields).forEach(id=>{ if(!validateField(id)) allValid = false; });
@@ -549,6 +553,9 @@ function initOrderForm(){
       if(firstInvalid) firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
       return;
     }
+    const data={full_name:document.getElementById("order-name").value.trim(),email:document.getElementById("order-email").value.trim(),phone:document.getElementById("order-phone").value.trim(),category:document.getElementById("order-category").value,timeline:document.getElementById("order-timeline").value,budget:document.getElementById("order-budget").value,pages:Number(document.getElementById("order-pages").value),features:[...orderState.features],project_details:document.getElementById("order-message").value.trim(),estimate:document.getElementById("order-estimate").textContent};
+    const {error}=await supabase.from("order_requests").insert([data]);
+    if(error){console.error(error);alert("Unable to submit your request. Please try again.");return;}
     openSuccessModal();
     form.reset();
     document.querySelectorAll('[data-order-feature].on').forEach(c=>c.classList.remove('on'));
