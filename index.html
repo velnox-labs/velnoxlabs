@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velnox Labs | Engineering Premium Digital Experiences</title>
+<meta name="description" content="Velnox Labs designs and engineers premium, high-performance websites — from business sites to hospitals, schools and shops. Proudly based in Ghatampur, Kanpur Dehat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loader">
+  <div class="loader-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  <div class="loader-bar"><span></span></div>
+  <div class="loader-text">Velnox Labs</div>
+</div>
+
+<canvas id="bg-canvas"></canvas>
+<div class="blob-field"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+<div id="cursor-glow"></div>
+<div id="scroll-progress"></div>
+
+<!-- Floating Instagram button -->
+<a class="float-insta magnetic" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener" aria-label="Message Velnox Labs on Instagram">
+  <span class="ping"></span>
+  <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg>
+</a>
+
+<!-- Success modal -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal-box">
+    <div class="modal-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3>Request received!</h3>
+    <p>Thanks for sharing your project details. Message us on Instagram at <strong>@velnox.labs</strong> so we can confirm the specifics and get started.</p>
+    <a href="https://instagram.com/velnox.labs" target="_blank" rel="noopener" class="btn btn-insta btn-block magnetic" style="margin-bottom:10px;">Open Instagram DM</a>
+    <button class="btn btn-ghost btn-block magnetic" onclick="closeSuccessModal()">Back to Home</button>
+  </div>
+</div>
+
+<!-- Nav -->
+<header class="nav-shell">
+  <div class="nav-glass" id="nav-glass">
+    <button class="brand" onclick="navigate('home')" style="border:none;background:none;">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></span>
+      <span>Velnox Labs<small>Digital Engineering Studio</small></span>
+    </button>
+    <nav class="nav-links">
+      <button class="nav-link" data-route="home" onclick="navigate('home')">Home</button>
+      <button class="nav-link" data-route="services" onclick="navigate('services')">Services</button>
+      <button class="nav-link" data-route="portfolio" onclick="navigate('portfolio')">Portfolio</button>
+      <button class="nav-link" data-route="demos" onclick="navigate('demos')">Demos</button>
+      <button class="nav-link" data-route="pricing" onclick="navigate('pricing')">Pricing</button>
+      <button class="nav-link" data-route="about" onclick="navigate('about')">About</button>
+      <button class="nav-link" data-route="contact" onclick="navigate('contact')">Contact</button>
+    </nav>
+    <button class="nav-cta magnetic" onclick="navigate('order')">Start a Project</button>
+    <button class="nav-burger" id="nav-burger" aria-label="Toggle menu"><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <button class="mobile-link" data-route="home" onclick="navigate('home')">Home</button>
+      <button class="mobile-link" data-route="services" onclick="navigate('services')">Services</button>
+      <button class="mobile-link" data-route="portfolio" onclick="navigate('portfolio')">Portfolio</button>
+      <button class="mobile-link" data-route="demos" onclick="navigate('demos')">Demo Websites</button>
+      <button class="mobile-link" data-route="pricing" onclick="navigate('pricing')">Pricing</button>
+      <button class="mobile-link" data-route="process" onclick="navigate('process')">Process</button>
+      <button class="mobile-link" data-route="faq" onclick="navigate('faq')">FAQ</button>
+      <button class="mobile-link" data-route="about" onclick="navigate('about')">About</button>
+      <button class="mobile-link" data-route="contact" onclick="navigate('contact')">Contact</button>
+      <button class="mobile-link" data-route="order" onclick="navigate('order')" style="color:var(--indigo);">Start a Project →</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================= HOME ============================= -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <span class="eyebrow"><span class="dot"></span>Proudly Based in Ghatampur, Kanpur Dehat</span>
+      <h1>Engineering Premium <br><span class="grad-text">Digital Experiences</span></h1>
+      <p class="hero-sub">Velnox Labs designs and builds fast, animated, beautifully engineered websites — for businesses, schools, hospitals, restaurants and shops that refuse to look ordinary.</p>
+      <div class="typing-line">We build <span id="typing-target"></span><span class="typing-cursor"></span></div>
+      <div class="hero-cta-row" style="margin-top:22px;">
+        <button class="btn btn-primary magnetic" onclick="navigate('order')">Start Your Project</button>
+        <button class="btn btn-ghost magnetic" onclick="navigate('portfolio')">View Our Work</button>
+        <button class="btn btn-ghost magnetic" onclick="navigate('demos')">Live Demos</button>
+      </div>
+
+      <div class="orb-visual" aria-hidden="true">
+        <div class="orb-ring r1"></div><div class="orb-ring r2"></div><div class="orb-ring r3"></div>
+        <div class="orb-node" style="top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+      </div>
+
+      <div class="hero-stats reveal">
+        <div class="stat-card"><div class="stat-num"><span data-count="99" data-suffix="%">0%</span></div><div class="stat-label">Client Satisfaction</div></div>
+        <div class="stat-card"><div class="stat-num"><span data-count="1.4" data-suffix="s">0s</span></div><div class="stat-label">Avg. Load Time</div></div>
+        <div class="stat-card"><div class="stat-num"><span data-count="100" data-suffix="%">0%</span></div><div class="stat-label">Mobile Responsive</div></div>
+        <div class="stat-card"><div class="stat-num"><span data-count="24" data-suffix="h">0h</span></div><div class="stat-label">Avg. Response Time</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee">
+    <div class="wrap"><div class="section-head" style="margin-bottom:22px;"><span class="page-kicker">Our Toolkit</span></div></div>
+    <div class="marquee-track" id="tech-marquee"></div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid grid-2" style="align-items:center; gap:50px;">
+        <div class="reveal">
+          <span class="page-kicker">Who We Are</span>
+          <h2 style="font-size:clamp(26px,3.6vw,38px); margin-bottom:16px;">A digital engineering studio built for brands who want more than a template.</h2>
+          <p style="color:var(--ink-soft); font-size:15px; line-height:1.75; margin-bottom:18px;">Velnox Labs is a small, focused studio that designs and codes every website by hand. We combine premium visual design with genuinely fast, lightweight engineering — so your site doesn't just look impressive, it performs like it too.</p>
+          <p style="color:var(--ink-soft); font-size:15px; line-height:1.75;">Every project starts with your brand's own story, not a recycled layout. From the first Instagram message to the final launch, we stay hands-on through every step.</p>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>Hand-Coded</h3><p>No page builders — every line written for speed and clarity.</p>
+          </div>
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div>
+            <h3>Design-Led</h3><p>A visual identity built for your brand, never copy-pasted.</p>
+          </div>
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></div>
+            <h3>Instagram-Fast</h3><p>Direct, informal communication from brief to launch.</p>
+          </div>
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <h3>On Schedule</h3><p>Clear timelines with no vanishing developers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Why Choose Velnox Labs</span>
+        <h2>Premium features, engineered in.</h2>
+        <p>Every build ships with the fundamentals that most agencies treat as an upsell.</p>
+      </div>
+      <div class="grid grid-3" id="features-grid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Our Services</span>
+        <h2>Everything your brand needs online.</h2>
+        <p>From a single landing page to a full institutional portal — one studio, one workflow.</p>
+      </div>
+      <div class="grid grid-4" id="services-grid-home"></div>
+      <div class="center" style="margin-top:34px;">
+        <button class="btn btn-ghost magnetic" onclick="navigate('services')">View All Services</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Our Workflow</span>
+        <h2>A calm, transparent process.</h2>
+        <p>No jargon, no vanishing developers — just a clear path from idea to launch.</p>
+      </div>
+      <div id="process-list-home" style="max-width:680px; margin:0 auto;"></div>
+      <div class="center" style="margin-top:10px;">
+        <button class="btn btn-ghost magnetic" onclick="navigate('process')">See Full Process</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Portfolio Preview</span>
+        <h2>Recent engineering work.</h2>
+        <p>A glimpse at what a Velnox Labs build looks like across industries.</p>
+      </div>
+      <div class="grid grid-3" id="portfolio-grid-home"></div>
+      <div class="center" style="margin-top:34px;">
+        <button class="btn btn-ghost magnetic" onclick="navigate('portfolio')">View Full Portfolio</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Client Testimonials</span>
+        <h2>Trusted by growing brands.</h2>
+        <p>Real feedback from teams we've built premium websites for.</p>
+      </div>
+      <div class="grid grid-3" id="testimonials-grid-home"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">FAQ</span>
+        <h2>Common questions.</h2>
+      </div>
+      <div style="max-width:720px; margin:0 auto;" id="faq-list-home"></div>
+      <div class="center" style="margin-top:24px;">
+        <button class="btn btn-ghost magnetic" onclick="navigate('faq')">View All FAQs</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="glass reveal" style="padding:56px 34px; text-align:center; background:var(--grad-brand-soft);">
+        <span class="page-kicker">Ready When You Are</span>
+        <h2 style="font-size:clamp(26px,4vw,40px); margin-bottom:14px;">Let's engineer your next website.</h2>
+        <p style="color:var(--ink-soft); max-width:520px; margin:0 auto 28px; font-size:15px;">Tell us about your project on Instagram or start with our order form — either way, you'll hear back fast.</p>
+        <div class="hero-cta-row">
+          <button class="btn btn-primary magnetic" onclick="navigate('order')">Start Your Project</button>
+          <a class="btn btn-insta magnetic" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg> Message on Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============================= SERVICES ============================= -->
+<div class="page" id="page-services">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Services</span>
+    <h1>Full-stack digital craftsmanship.</h1>
+    <p>Fourteen specialised services, one consistent standard of premium engineering.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-4" id="services-grid-full"></div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap center">
+      <div class="glass reveal" style="padding:44px 30px;">
+        <h2 style="font-size:26px; margin-bottom:12px;">Not sure which service fits?</h2>
+        <p style="color:var(--ink-soft); margin-bottom:22px;">Message us your goal and we'll recommend the right package.</p>
+        <div class="hero-cta-row">
+          <button class="btn btn-primary magnetic" onclick="navigate('order')">Start an Order</button>
+          <a class="btn btn-insta magnetic" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener">Ask on Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= PORTFOLIO ============================= -->
+<div class="page" id="page-portfolio">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Portfolio</span>
+    <h1>Selected engineering work.</h1>
+    <p>Every card below represents a full design-to-launch build across a different industry.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-3" id="portfolio-grid-full"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= DEMOS ============================= -->
+<div class="page" id="page-demos">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Demo Websites</span>
+    <h1>Explore live Velnox Labs builds.</h1>
+    <p>Full interactive demonstrations you can preview right now.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-2">
+        <div class="card demo-card reveal">
+          <div class="demo-preview" style="background:linear-gradient(135deg,#4f46e5,#9333ea);">
+            <div class="port-chrome" style="top:14px;left:16px;"><span></span><span></span><span></span></div>
+          </div>
+          <div class="demo-body">
+            <span class="port-cat">Creative Agency</span>
+            <h3>USP Visuals</h3>
+            <p>A bold, motion-first website demo built for a creative agency — animated case studies, magnetic buttons and a cinematic hero.</p>
+            <div class="demo-actions">
+              <a class="btn btn-primary btn-sm magnetic" href="https://velnox-labs.github.io/uspvisuals/" target="_blank" rel="noopener">Preview Demo</a>
+              <button class="btn btn-ghost btn-sm magnetic" onclick="navigate('order')">Request Similar</button>
+            </div>
+          </div>
+        </div>
+        <div class="card demo-card reveal">
+          <div class="demo-preview" style="background:linear-gradient(135deg,#065f46,#0ea5e9);">
+            <div class="port-chrome" style="top:14px;left:16px;"><span></span><span></span><span></span></div>
+          </div>
+          <div class="demo-body">
+            <span class="port-cat">Banking</span>
+            <h3>APC Bank</h3>
+            <p>A professional banking website demo — secure, calm and structured, built around clear account and service flows.</p>
+            <div class="demo-actions">
+              <a class="btn btn-primary btn-sm magnetic" href="demo-apc-bank.html" target="_blank" rel="noopener">Preview Demo</a>
+              <button class="btn btn-ghost btn-sm magnetic" onclick="navigate('order')">Request Similar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card note-card reveal">
+        <div class="note-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4L12 2z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <p>If you build your website with Velnox Labs, your project can also be featured here as a live demo until it is sold or officially launched. With your permission, we may continue showcasing it in our portfolio even after deployment.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= PRICING ============================= -->
+<div class="page" id="page-pricing">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Pricing</span>
+    <h1>Transparent, calculated pricing.</h1>
+    <p>Pick a package, or build your own estimate with the calculator below.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-3" id="pricing-cards"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Estimate Calculator</span>
+        <h2>Build your own quote.</h2>
+        <p>Adjust the sliders below for a live, indicative estimate.</p>
+      </div>
+      <div class="card calc-wrap reveal" style="max-width:680px; margin:0 auto;">
+        <div class="calc-row">
+          <label>Project Category</label>
+          <select id="calc-category" class="chip" style="width:100%; padding:12px;">
+            <option value="business">Business Website</option>
+            <option value="education">Educational Portal</option>
+            <option value="landing">Landing Page</option>
+            <option value="portfolio">Portfolio Website</option>
+            <option value="restaurant">Restaurant Website</option>
+            <option value="hospital">Hospital Website</option>
+            <option value="school">School Website</option>
+            <option value="shop">Shop Website</option>
+          </select>
+        </div>
+        <div class="calc-row">
+          <label>Number of Pages <span class="val" id="calc-pages-val">5 pages</span></label>
+          <input type="range" id="calc-pages" min="1" max="15" value="5">
+        </div>
+        <div class="calc-row">
+          <label>Timeline</label>
+          <div class="chip-row">
+            <button type="button" class="chip on" data-timeline="rush">Rush (3–5 days)</button>
+            <button type="button" class="chip" data-timeline="standard">Standard (1–2 weeks)</button>
+            <button type="button" class="chip" data-timeline="relaxed">Relaxed (3+ weeks)</button>
+          </div>
+        </div>
+        <div class="calc-row">
+          <label>Add-on Features</label>
+          <div class="chip-row">
+            <button type="button" class="chip" data-feature="animations">Premium Animations</button>
+            <button type="button" class="chip" data-feature="forms">Contact / Enquiry Forms</button>
+            <button type="button" class="chip" data-feature="seo">Advanced SEO</button>
+            <button type="button" class="chip" data-feature="multilang">Multi-language</button>
+            <button type="button" class="chip" data-feature="ecommerce">E-commerce / Cart</button>
+            <button type="button" class="chip" data-feature="cms">Content Management</button>
+          </div>
+        </div>
+        <div class="calc-total">
+          <span style="font-weight:700; color:var(--ink-soft); font-size:13.5px;">Estimated Cost</span>
+          <span class="amt" id="calc-total">₹0</span>
+        </div>
+        <a href="https://instagram.com/velnox.labs" target="_blank" rel="noopener" id="calc-insta-link" class="btn btn-insta btn-block magnetic" style="margin-top:20px;">Discuss This Estimate on Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Compare Plans</span>
+        <h2>Feature by feature.</h2>
+      </div>
+      <div class="card reveal" style="padding:26px; overflow-x:auto;" id="compare-table-wrap"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= PROCESS ============================= -->
+<div class="page" id="page-process">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Process</span>
+    <h1>How a Velnox Labs project runs.</h1>
+    <p>Six clear stages from first message to launched website.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div id="process-list-full" style="max-width:700px; margin:0 auto;"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= FAQ ============================= -->
+<div class="page" id="page-faq">
+  <div class="page-hero wrap">
+    <span class="page-kicker">FAQ</span>
+    <h1>Answers before you ask.</h1>
+    <p>Still curious about something? Message us on Instagram any time.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div style="max-width:760px; margin:0 auto;" id="faq-list-full"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= ABOUT ============================= -->
+<div class="page" id="page-about">
+  <div class="page-hero wrap">
+    <span class="page-kicker">About Velnox Labs</span>
+    <h1>A small studio, an outsized standard.</h1>
+    <p>Proudly based in Ghatampur, Kanpur Dehat — building for clients everywhere.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-2" style="align-items:center; gap:50px;">
+        <div class="reveal">
+          <h2 style="font-size:clamp(24px,3.4vw,32px); margin-bottom:16px;">Engineering-first, design-obsessed.</h2>
+          <p style="color:var(--ink-soft); font-size:15px; line-height:1.75; margin-bottom:16px;">Velnox Labs was founded on a simple frustration: most "affordable" websites look and feel disposable. We set out to prove that a small studio, based in Ghatampur, Kanpur Dehat, could deliver work that stands next to any big-city agency.</p>
+          <p style="color:var(--ink-soft); font-size:15px; line-height:1.75; margin-bottom:16px;">Every project runs through the same discipline: a design plan built for that specific brand, code written by hand for speed and clarity, and a review process that keeps you involved until launch.</p>
+          <div class="badge-row" style="justify-content:flex-start;">
+            <span class="mini-badge">📍 Ghatampur, Kanpur Dehat</span>
+            <span class="mini-badge">⚡ Lightweight Engineering</span>
+            <span class="mini-badge">🎨 Custom Visual Identity</span>
+          </div>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="card feature-card reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></div><h3>Our Mission</h3><p>Make premium, high-performance web design accessible to growing businesses and institutions.</p></div>
+          <div class="card feature-card reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div><h3>Our Vision</h3><p>To be the studio regional brands trust first when they're ready to look world-class online.</p></div>
+          <div class="card feature-card reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><h3>Our Values</h3><p>Transparency, craftsmanship and speed — without cutting corners on quality.</p></div>
+          <div class="card feature-card reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><h3>Our Method</h3><p>Hand-coded, lightweight builds — no bloated page builders slowing your site down.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="page-kicker">Our Workflow</span>
+        <h2>The same process, every time.</h2>
+      </div>
+      <div id="process-list-about" style="max-width:680px; margin:0 auto;"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= CONTACT ============================= -->
+<div class="page" id="page-contact">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Contact</span>
+    <h1>Let's start a conversation.</h1>
+    <p>We keep things simple — every conversation happens over Instagram Direct Messages.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-3">
+        <div class="card contact-tile reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></div>
+          <h3>Instagram DM</h3>
+          <p>The fastest way to reach us. Message @velnox.labs and we'll usually reply within a few hours.</p>
+          <a class="btn btn-insta btn-sm magnetic" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener" style="align-self:flex-start;">@velnox.labs</a>
+        </div>
+        <div class="card contact-tile reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4V4z" stroke="currentColor" stroke-width="2"/><path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Email</h3>
+          <p>Prefer email for detailed briefs and documents?</p>
+          <span class="mini-badge" style="align-self:flex-start;">hello@velnoxlabs.com</span>
+        </div>
+        <div class="card contact-tile reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="2"/></svg></div>
+          <h3>Studio Location</h3>
+          <p>Proudly based in Ghatampur, Kanpur Dehat — working with clients across the country.</p>
+          <span class="mini-badge" style="align-self:flex-start;">Ghatampur, Kanpur Dehat</span>
+        </div>
+      </div>
+
+      <div class="glass reveal center" style="padding:50px 30px; margin-top:40px;">
+        <h2 style="font-size:clamp(24px,3.4vw,32px); margin-bottom:14px;">Ready to talk about your project?</h2>
+        <p style="color:var(--ink-soft); max-width:480px; margin:0 auto 26px; font-size:15px;">Every "Contact Us" here leads to the same place — an actual conversation with us on Instagram.</p>
+        <div class="hero-cta-row">
+          <a class="btn btn-insta magnetic" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener">Message on Instagram</a>
+          <button class="btn btn-ghost magnetic" onclick="navigate('order')">Or Fill the Order Form</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= ORDER ============================= -->
+<div class="page" id="page-order">
+  <div class="page-hero wrap">
+    <span class="page-kicker">Start an Order</span>
+    <h1>Tell us about your project.</h1>
+    <p>Fill in the details below for an instant estimate — no backend, no waiting, no obligation.</p>
+  </div>
+  <section style="padding-top:10px;">
+    <div class="wrap">
+      <div class="grid grid-2" style="align-items:flex-start; gap:36px;">
+        <form class="card reveal" id="order-form" style="padding:34px; grid-column:span 1;">
+          <div class="grid grid-2" style="gap:0 16px;">
+            <div class="form-field">
+              <label for="order-name">Full Name</label>
+              <input type="text" id="order-name" placeholder="Your name">
+              <span class="form-error">Please enter your full name.</span>
+            </div>
+            <div class="form-field">
+              <label for="order-email">Email Address</label>
+              <input type="email" id="order-email" placeholder="you@email.com">
+              <span class="form-error">Enter a valid email address.</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="order-phone">Phone Number</label>
+            <input type="tel" id="order-phone" placeholder="+91 98765 43210">
+            <span class="form-error">Enter a valid phone number.</span>
+          </div>
+          <div class="grid grid-2" style="gap:0 16px;">
+            <div class="form-field">
+              <label for="order-category">Project Category</label>
+              <select id="order-category">
+                <option value="">Select category</option>
+                <option value="business">Business Website</option>
+                <option value="education">Educational Portal</option>
+                <option value="landing">Landing Page</option>
+                <option value="portfolio">Portfolio Website</option>
+                <option value="restaurant">Restaurant Website</option>
+                <option value="hospital">Hospital Website</option>
+                <option value="school">School Website</option>
+                <option value="shop">Shop Website</option>
+              </select>
+              <span class="form-error">Please select a project category.</span>
+            </div>
+            <div class="form-field">
+              <label for="order-timeline">Timeline</label>
+              <select id="order-timeline">
+                <option value="">Select timeline</option>
+                <option value="rush">Rush (3–5 days)</option>
+                <option value="standard">Standard (1–2 weeks)</option>
+                <option value="relaxed">Relaxed (3+ weeks)</option>
+              </select>
+              <span class="form-error">Please select a timeline.</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="order-budget">Budget Range</label>
+            <select id="order-budget">
+              <option value="">Select budget range</option>
+              <option value="under10">Under ₹10,000</option>
+              <option value="10to25">₹10,000 – ₹25,000</option>
+              <option value="25to50">₹25,000 – ₹50,000</option>
+              <option value="above50">Above ₹50,000</option>
+            </select>
+            <span class="form-error">Please select a budget range.</span>
+          </div>
+          <div class="form-field">
+            <label>Number of Pages <span class="val" id="order-pages-val" style="color:var(--indigo); font-weight:700;">5 pages</span></label>
+            <input type="range" id="order-pages" min="1" max="15" value="5">
+          </div>
+          <div class="form-field">
+            <label>Feature Selection</label>
+            <div class="chip-row">
+              <button type="button" class="chip" data-order-feature="animations">Premium Animations</button>
+              <button type="button" class="chip" data-order-feature="forms">Contact Forms</button>
+              <button type="button" class="chip" data-order-feature="seo">Advanced SEO</button>
+              <button type="button" class="chip" data-order-feature="multilang">Multi-language</button>
+              <button type="button" class="chip" data-order-feature="ecommerce">E-commerce</button>
+              <button type="button" class="chip" data-order-feature="cms">CMS Panel</button>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="order-message">Project Details</label>
+            <textarea id="order-message" placeholder="Tell us about your business and what you're looking for..."></textarea>
+          </div>
+          <div class="calc-total" style="margin-bottom:20px;">
+            <span style="font-weight:700; color:var(--ink-soft); font-size:13.5px;">Estimated Cost</span>
+            <span class="amt" id="order-estimate">₹0</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block magnetic">Submit Order Request</button>
+        </form>
+
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>What happens next?</h3>
+            <p>We review your request and confirm every detail with you over Instagram DM before any work begins.</p>
+          </div>
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <h3>Fast turnaround</h3>
+            <p>Most projects begin within 24 hours of confirming scope and payment terms.</p>
+          </div>
+          <div class="card feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>No hidden costs</h3>
+            <p>The estimate above updates live — the final quote is confirmed before any work starts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================= 404 ============================= -->
+<div class="page" id="page-404">
+  <div class="wrap page-404">
+    <div class="error-code">404</div>
+    <h1 style="font-size:clamp(22px,3.4vw,32px); margin:18px 0 12px;">This page hasn't been engineered yet.</h1>
+    <p style="color:var(--ink-soft); max-width:440px; margin:0 auto 30px;">The page you're looking for doesn't exist. Let's get you back to somewhere real.</p>
+    <div class="hero-cta-row">
+      <button class="btn btn-primary magnetic" onclick="navigate('home')">Back to Home</button>
+      <button class="btn btn-ghost magnetic" onclick="navigate('contact')">Contact Us</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></span><span>Velnox Labs</span></div>
+      <p>Engineering premium digital experiences for brands, institutions and businesses. Proudly based in Ghatampur, Kanpur Dehat.</p>
+      <div class="social-row">
+        <a class="social-btn" href="https://instagram.com/velnox.labs" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a onclick="navigate('home')">Home</a>
+      <a onclick="navigate('portfolio')">Portfolio</a>
+      <a onclick="navigate('pricing')">Pricing</a>
+      <a onclick="navigate('process')">Process</a>
+      <a onclick="navigate('faq')">FAQ</a>
+      <a onclick="navigate('about')">About</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a onclick="navigate('services')">Website Development</a>
+      <a onclick="navigate('services')">Business Websites</a>
+      <a onclick="navigate('services')">School &amp; Hospital Sites</a>
+      <a onclick="navigate('services')">Website Redesign</a>
+      <a onclick="navigate('services')">Maintenance</a>
+    </div>
+    <div class="footer-col">
+      <h4>Get in Touch</h4>
+      <a href="https://instagram.com/velnox.labs" target="_blank" rel="noopener">@velnox.labs</a>
+      <a href="#">hello@velnoxlabs.com</a>
+      <a onclick="navigate('contact')">📍 Ghatampur, Kanpur Dehat</a>
+      <a onclick="navigate('order')">Start an Order →</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© <span id="year"></span> Velnox Labs. All rights reserved.</span>
+    <span>Engineered with premium care in Ghatampur, Kanpur Dehat.</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
