@@ -2,9 +2,21 @@
    VELNOX LABS — App logic
    ========================================================================== */
 
-const SUPABASE_URL="https://fevujjvpmehimeajbsez.supabase.co";
-const SUPABASE_KEY="sb_publishable_f8idRLFwQXZ4FvEdpoIdGA_WSk8jc4o";
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+/* ---------------------------- SUPABASE ---------------------------- */
+
+const SUPABASE_URL = 'https://fevujjvpmehimeajbsez.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_f8idRLFwQXZ4FvEdpoIdGA_WSk8jc4o';
+let supabaseClient = null;
+
+if(window.supabase && typeof window.supabase.createClient === 'function'){
+  try{
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch(err){
+    console.error('Failed to initialize Supabase client:', err);
+  }
+} else {
+  console.error('Supabase library not loaded — order form submissions will not be saved to the database.');
+}
 
 /* ---------------------------- DATA ---------------------------- */
 
@@ -553,15 +565,42 @@ function initOrderForm(){
       if(firstInvalid) firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
       return;
     }
-    const data={full_name:document.getElementById("order-name").value.trim(),email:document.getElementById("order-email").value.trim(),phone:document.getElementById("order-phone").value.trim(),category:document.getElementById("order-category").value,timeline:document.getElementById("order-timeline").value,budget:document.getElementById("order-budget").value,pages:Number(document.getElementById("order-pages").value),features:[...orderState.features],project_details:document.getElementById("order-message").value.trim(),estimate:document.getElementById("order-estimate").textContent};
-    const {error}=await supabase.from("order_requests").insert([data]);
-    if(error){console.error(error);alert("Unable to submit your request. Please try again.");return;}
-    openSuccessModal();
-    form.reset();
-    document.querySelectorAll('[data-order-feature].on').forEach(c=>c.classList.remove('on'));
-    orderState.features.clear();
-    document.querySelectorAll('#order-form .form-field').forEach(f=>f.classList.remove('valid','invalid'));
-    updateOrderEstimate();
+
+    hideOrderFormError();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitBtnDefaultText = submitBtn ? submitBtn.textContent : '';
+    if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Submitting...'; }
+
+    const orderPayload = {
+      full_name: document.getElementById('order-name').value.trim(),
+      email: document.getElementById('order-email').value.trim(),
+      phone: document.getElementById('order-phone').value.trim(),
+      category: document.getElementById('order-category').value,
+      timeline: document.getElementById('order-timeline').value,
+      budget: document.getElementById('order-budget').value,
+      pages: parseInt(document.getElementById('order-pages').value) || 1,
+      features: Array.from(orderState.features),
+      project_details: document.getElementById('order-message').value.trim(),
+      estimate: document.getElementById('order-estimate').textContent.trim()
+    };
+
+    try{
+      if(!supabaseClient){ throw new Error('Supabase client is not initialized.'); }
+      const { error } = await supabaseClient.from('order_requests').insert([orderPayload]);
+      if(error){ throw error; }
+
+      openSuccessModal();
+      form.reset();
+      document.querySelectorAll('[data-order-feature].on').forEach(c=>c.classList.remove('on'));
+      orderState.features.clear();
+      document.querySelectorAll('#order-form .form-field').forEach(f=>f.classList.remove('valid','invalid'));
+      updateOrderEstimate();
+    } catch(err){
+      console.error('Supabase order insert failed:', err);
+      showOrderFormError('Something went wrong while sending your request. Please try again in a moment, or message us directly on Instagram.');
+    } finally {
+      if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = submitBtnDefaultText; }
+    }
   });
 }
 
@@ -571,6 +610,27 @@ function openSuccessModal(){
 function closeSuccessModal(){
   document.getElementById('success-modal').classList.remove('open');
   navigate('home');
+}
+
+function showOrderFormError(message){
+  const form = document.getElementById('order-form');
+  if(!form) return;
+  let errorBox = document.getElementById('order-form-submit-error');
+  if(!errorBox){
+    errorBox = document.createElement('div');
+    errorBox.id = 'order-form-submit-error';
+    errorBox.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:18px; padding:13px 16px; border-radius:12px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.35); color:#ef4444; font-size:13.5px; font-weight:600; line-height:1.5;';
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if(submitBtn && submitBtn.parentNode){ submitBtn.parentNode.insertBefore(errorBox, submitBtn); }
+    else { form.appendChild(errorBox); }
+  }
+  errorBox.textContent = message;
+  errorBox.style.display = 'flex';
+}
+
+function hideOrderFormError(){
+  const errorBox = document.getElementById('order-form-submit-error');
+  if(errorBox) errorBox.style.display = 'none';
 }
 
 /* ---------------------------- INIT ---------------------------- */
