@@ -30,9 +30,9 @@
   --indigo:#4F46E5; --violet:#7C3AED; --violet-deep:#5B21B6;
   --grad: linear-gradient(115deg,#4338CA 0%,#6D28D9 55%,#9333EA 100%);
   --grad-soft: linear-gradient(115deg,rgba(79,70,229,.10),rgba(147,51,234,.10));
-  --good:#16A34A; --good-bg:#EAFBF1;
-  --warn:#D97706; --warn-bg:#FEF6E7;
-  --bad:#DC2626; --bad-bg:#FDEDEC;
+  --good:#15803D; --good-bg:#EAFBF1;
+  --warn:#B45309; --warn-bg:#FEF6E7;
+  --bad:#C81E1E; --bad-bg:#FDEDEC;
   --info:#4F46E5; --info-bg:#EEECFC;
   --radius:14px; --radius-sm:9px; --radius-lg:22px;
   --shadow-sm: 0 1px 2px rgba(20,18,31,.06), 0 1px 1px rgba(20,18,31,.04);
@@ -597,6 +597,17 @@ body{ background:var(--paper); }
 @media (min-width:861px){ #page-dashboard .app-sidebar a{ color:var(--ink-soft); } #page-dashboard .app-sidebar a:hover{ background:#fff; color:var(--ink); } #page-dashboard .app-sidebar a.active{ background:#0A0C1F; color:#fff; border-color:#0A0C1F; } }
 .stars{ color:#A85800; }
 .vx-eb,.vx-why .vx-eb{ color:#9CA0FF; }
+
+/* ===== VISIBILITY FIXES (text colour on dark / low-contrast spots) ===== */
+#page-dashboard .app-topbar :is(h1,h2,h3,.disp){ color:#fff; }
+#page-dashboard .kpi .disp{ color:#fff; }
+.vx-title span{ color:#8B93FF; }
+.star-display{ color:#B45309; }
+.star-picker span{ color:#B4B9D6; }
+.star-picker span.on{ color:#B45309; }
+.field select option{ color:var(--ink); background:#fff; }
+.field select optgroup{ color:var(--ink-soft); font-weight:700; }
+.field input::placeholder, .field textarea::placeholder{ color:#7A7E9C; opacity:1; }
 </style>
 <script>
 /* PWA manifest + icons built inline — no external manifest.json / icons needed */
@@ -878,7 +889,43 @@ body{ background:var(--paper); }
               </select>
               <div class="err">Please select what you're applying as.</div>
             </div>
-            <div class="field" id="a-skills"><label>Skills / Domain <span class="req">*</span></label><input type="text" name="skills" placeholder="e.g. Web development, UI design, Content writing" required><div class="err">Please tell us your skills or domain.</div></div>
+            <div class="field" id="a-skills"><label>Skills / Domain <span class="req">*</span></label>
+              <select name="skills" id="applyDomain" required>
+                <option value="">Select your domain</option>
+                <optgroup label="Development">
+                  <option value="Frontend Web Development">Frontend Web Development</option>
+                  <option value="Backend Development">Backend Development</option>
+                  <option value="Full Stack Development">Full Stack Development</option>
+                  <option value="WordPress Development">WordPress Development</option>
+                  <option value="E-commerce Development">E-commerce Development (Shopify / WooCommerce)</option>
+                  <option value="Mobile App Development">Mobile App Development</option>
+                  <option value="Software Testing / QA">Software Testing / QA</option>
+                </optgroup>
+                <optgroup label="Design &amp; Creative">
+                  <option value="UI/UX Design">UI/UX Design</option>
+                  <option value="Graphic Design">Graphic Design</option>
+                  <option value="Logo &amp; Branding">Logo &amp; Branding</option>
+                  <option value="Video Editing">Video Editing</option>
+                  <option value="Motion Graphics">Motion Graphics</option>
+                </optgroup>
+                <optgroup label="Marketing &amp; Content">
+                  <option value="SEO">SEO</option>
+                  <option value="Digital Marketing">Digital Marketing</option>
+                  <option value="Social Media Management">Social Media Management</option>
+                  <option value="Content Writing">Content Writing</option>
+                  <option value="Copywriting">Copywriting</option>
+                </optgroup>
+                <optgroup label="Business &amp; Support">
+                  <option value="Business Development / Sales">Business Development / Sales</option>
+                  <option value="Project Management">Project Management</option>
+                  <option value="Customer Support">Customer Support</option>
+                  <option value="Data Entry">Data Entry</option>
+                </optgroup>
+                <option value="Other">Other (type your own)</option>
+              </select>
+              <input type="text" name="skillsOther" id="applyDomainOther" placeholder="Type your domain / skill" style="display:none; margin-top:10px;" maxlength="80">
+              <div class="err">Please select your domain.</div>
+            </div>
             <div class="field" id="a-experience"><label>Experience level <span class="req">*</span></label>
               <select name="experience" required>
                 <option value="">Select one</option>
@@ -1959,7 +2006,9 @@ function renderApply_bindOnce(){
     const form = e.target;
     const fd = new FormData(form);
     const name=(fd.get('name')||'').trim(), email=(fd.get('email')||'').trim(), phone=(fd.get('phone')||'').trim();
-    const role=(fd.get('role')||'').trim(), skills=(fd.get('skills')||'').trim(), experience=(fd.get('experience')||'').trim();
+    const role=(fd.get('role')||'').trim(), experience=(fd.get('experience')||'').trim();
+    let skills=(fd.get('skills')||'').trim();
+    if(skills==='Other') skills=(fd.get('skillsOther')||'').trim();
     let instagram=(fd.get('instagram')||'').trim().replace(/^@/,'');
     const portfolio=(fd.get('portfolio')||'').trim(), availability=(fd.get('availability')||'').trim(), message=(fd.get('message')||'').trim();
 
@@ -1998,6 +2047,14 @@ function renderApply_bindOnce(){
   });
 }
 function renderApply(){ renderApply_bindOnce(); }
+(function(){
+  const sel = document.getElementById('applyDomain'), other = document.getElementById('applyDomainOther');
+  if(!sel || !other) return;
+  const sync = ()=>{ const isOther = sel.value==='Other'; other.style.display = isOther ? 'block' : 'none'; if(!isOther) other.value=''; };
+  sel.addEventListener('change', ()=>{ sync(); if(sel.value==='Other') other.focus(); });
+  const form = document.getElementById('applyForm');
+  if(form) form.addEventListener('reset', ()=> setTimeout(sync,0));
+})();
 
 /* =====================================================================
    AUTH
