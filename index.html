@@ -608,6 +608,20 @@ body{ background:var(--paper); }
 .field select option{ color:var(--ink); background:#fff; }
 .field select optgroup{ color:var(--ink-soft); font-weight:700; }
 .field input::placeholder, .field textarea::placeholder{ color:#7A7E9C; opacity:1; }
+
+/* ===== Certificate verification ===== */
+.cert-qr{ text-align:center; font-size:1.05cqw; line-height:1.3; color:#111; align-self:flex-end; }
+.cert-qr canvas{ width:7.4cqw !important; height:7.4cqw !important; display:block; margin:0 auto .5cqw; }
+@media (max-width:600px){ .cert-qr{ font-size:10px; align-self:center; } .cert-qr canvas{ width:84px !important; height:84px !important; margin-bottom:4px; } }
+.verify-box{ border-radius:var(--radius); padding:18px 18px 16px; border:1.5px solid; }
+.verify-box.ok{ background:var(--good-bg); border-color:var(--good); }
+.verify-box.bad{ background:var(--bad-bg); border-color:var(--bad); }
+.verify-box.warn{ background:var(--warn-bg); border-color:var(--warn); }
+.verify-title{ display:flex; align-items:center; gap:8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; margin-bottom:6px; }
+.verify-box.ok .verify-title{ color:var(--good); } .verify-box.bad .verify-title{ color:var(--bad); } .verify-box.warn .verify-title{ color:var(--warn); }
+.verify-box p{ color:var(--ink-soft); font-size:14px; }
+.verify-rows{ margin-top:12px; display:grid; grid-template-columns:auto 1fr; gap:8px 16px; font-size:14px; }
+.verify-rows dt{ color:var(--muted); font-weight:600; } .verify-rows dd{ margin:0; color:var(--ink); font-weight:600; overflow-wrap:anywhere; }
 /* logged-in profile pill + dropdown in the dark nav */
 #nav #userMenuBtn{ background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.30); color:#fff; }
 #nav #userMenuBtn:hover{ background:rgba(255,255,255,.18); }
@@ -971,6 +985,26 @@ body{ background:var(--paper); }
   </div>
 </section>
 
+<!-- ===================== VERIFY CERTIFICATE (public) ===================== -->
+<section class="page" id="page-verify">
+  <div class="section" style="padding-top:56px;">
+    <div class="wrap" style="max-width:640px;">
+      <div class="section-head center">
+        <div class="eyebrow">Verify</div>
+        <h1 class="disp h-lg">Verify a certificate</h1>
+        <p class="lede mt-14">Enter the Certificate ID printed on a Velnox Labs certificate, or scan the QR code on it, to confirm it is genuine.</p>
+      </div>
+      <div class="card">
+        <form id="verifyForm" novalidate>
+          <div class="field" style="margin-bottom:14px;"><label for="verifyInput">Certificate ID</label><input type="text" id="verifyInput" placeholder="e.g. VLX-INT-1A2B3C" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30"></div>
+          <button type="submit" class="btn btn-primary btn-block" id="verifyBtn"><span class="btn-label">Verify certificate</span></button>
+        </form>
+        <div id="verifyResult" class="mt-20" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== FAQ ===================== -->
 <section class="page" id="page-faq">
   <div class="section" style="padding-top:56px;">
@@ -1212,6 +1246,7 @@ body{ background:var(--paper); }
           <li><a href="#/pricing" data-link="/pricing">Pricing</a></li>
           <li><a href="#/estimate" data-link="/estimate">Estimator</a></li>
           <li><a href="#/faq" data-link="/faq">FAQ</a></li>
+          <li><a href="#/verify" data-link="/verify">Verify certificate</a></li>
           <li><a href="#/support" data-link="/support">Support</a></li>
           <li><a href="#/terms" data-link="/terms">Terms &amp; Refund Policy</a></li>
         </ul>
@@ -1516,7 +1551,7 @@ const PAGE_IDS = {
   '/':'page-home', '/services':'page-services', '/portfolio':'page-portfolio',
   '/pricing':'page-pricing', '/estimate':'page-estimate', '/contact':'page-contact',
   '/faq':'page-faq', '/support':'page-support', '/blog':'page-blog', '/terms':'page-terms',
-  '/auth':'page-auth', '/dashboard':'page-dashboard', '/admin':'page-admin', '/apply':'page-apply'
+  '/auth':'page-auth', '/dashboard':'page-dashboard', '/admin':'page-admin', '/apply':'page-apply', '/verify':'page-verify'
 };
 const PROTECTED_ROUTES = ['/dashboard'];
 const ADMIN_ROUTES = ['/admin'];
@@ -1581,6 +1616,7 @@ function router(){
   if(pageId==='page-dashboard') renderDashboard();
   if(pageId==='page-admin') renderAdmin();
   if(pageId==='page-apply') renderApply();
+  if(pageId==='page-verify') renderVerify(parts[1] ? decodeURIComponent(parts[1]) : '');
 
   // close mobile menu
   $('#mobileMenu').style.display='none';
@@ -3593,7 +3629,8 @@ function openCertificateModal(a){
     ? `Successfully completed an <strong>Internship</strong> in <strong>${domain}</strong>`
     : `Successfully worked as a <strong>Freelancer</strong> in <strong>${domain}</strong>`;
   const certNo = a.certNo || generateCertNumber(a);
-  const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+  const issuedDate = (a.certIssuedAt && typeof a.certIssuedAt.toDate==='function') ? a.certIssuedAt.toDate() : new Date();
+  const today = issuedDate.toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
   $('#modalBox').classList.add('wide');
   openModal(`
     <div class="cert-doc" id="certDocBox">
@@ -3619,6 +3656,7 @@ function openCertificateModal(a){
             ${a.email ? `<div>Email ID: ${esc(a.email)}</div>` : ''}
             ${a.instagram ? `<div>Instagram: @${esc(a.instagram)}</div>` : ''}
           </div>
+          <div class="cert-qr" id="certQr"><span>Scan to verify</span></div>
           <div class="cert-sign">
             <b>Velnox Labs</b>
             <div>Authorised Signatory</div>
@@ -3628,13 +3666,107 @@ function openCertificateModal(a){
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <button class="btn btn-ghost" id="certRevokeBtn" style="display:none;"></button>
       <button class="btn btn-primary" onclick="printCertificate()">⬇ Download / Print PDF</button>
     </div>
   `);
+  setupCertVerification(a, certNo, a.skills||'Web Development', today);
   if(!a.certNo){
     window.fb.updateDoc(window.fb.doc(window.fb.db,'hiring_applications', a.id), { certNo, certIssuedAt: window.fb.serverTimestamp() }).catch(()=>{});
   }
 }
+
+/* ---- Certificate verification ---- */
+const CERT_ID_RE = /^VLX-(INT|FRL)-[0-9A-F]{6}$/;
+function certVerifyUrl(certNo){ return location.href.split('#')[0] + '#/verify/' + encodeURIComponent(certNo); }
+
+/* Admin side: put a QR on the certificate, register it in the public `certificates`
+   collection (only name / role / domain / date — no email or phone) and wire the revoke button. */
+async function setupCertVerification(app, certNo, domain, issuedLabel){
+  const qrHost = document.getElementById('certQr');
+  if(qrHost){
+    loadQrLib().then(QR=>{
+      QR.toCanvas(certVerifyUrl(certNo), { width:240, margin:0, errorCorrectionLevel:'M', color:{ dark:'#111111', light:'#FFFFFF' } }, function(err, canvas){
+        if(!err && canvas && document.getElementById('certQr')===qrHost) qrHost.insertBefore(canvas, qrHost.firstChild);
+      });
+    }).catch(()=>{});
+  }
+  try{
+    const ref = window.fb.doc(window.fb.db,'certificates', certNo);
+    let snap = await window.fb.getDoc(ref);
+    if(!snap.exists()){
+      await window.fb.setDoc(ref, {
+        site: window.fb.SITE_ID, certNo, appId: app.id||'',
+        name: app.name||'', role: app.role||'', domain: domain,
+        issuedOn: issuedLabel, status: 'VALID', createdAt: window.fb.serverTimestamp()
+      });
+      snap = await window.fb.getDoc(ref);
+    }
+    const btn = document.getElementById('certRevokeBtn');
+    if(!btn) return;
+    let status = (snap.data()||{}).status || 'VALID';
+    const paint = ()=>{ btn.style.display='inline-flex'; btn.textContent = status==='REVOKED' ? '↩ Restore certificate' : '🚫 Revoke certificate'; };
+    paint();
+    btn.onclick = async ()=>{
+      const next = status==='REVOKED' ? 'VALID' : 'REVOKED';
+      if(next==='REVOKED' && !confirm('Revoke this certificate? The verify page will show it as revoked.')) return;
+      try{
+        await window.fb.updateDoc(ref, { status: next });
+        status = next; paint();
+        toast(next==='REVOKED' ? 'Certificate revoked.' : 'Certificate restored.', 'success');
+      }catch(err){ console.error(err); toast('Could not update the certificate.', 'error'); }
+    };
+  }catch(err){
+    console.error('Certificate registration failed', err);
+    toast('Certificate shown, but online verification could not be set up. Check Firestore rules for "certificates".', 'error');
+  }
+}
+
+/* Public side */
+let verifyBound = false;
+function renderVerify(idFromUrl){
+  const input = $('#verifyInput');
+  if(!verifyBound){
+    verifyBound = true;
+    $('#verifyForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const id = normalizeCertId($('#verifyInput').value);
+      history.replaceState(null, '', '#/verify' + (id ? '/' + encodeURIComponent(id) : ''));
+      verifyCertificate(id);
+    });
+  }
+  $('#verifyResult').innerHTML = '';
+  input.value = idFromUrl ? normalizeCertId(idFromUrl) : '';
+  if(idFromUrl) verifyCertificate(normalizeCertId(idFromUrl));
+}
+function normalizeCertId(v){ return String(v||'').trim().toUpperCase().replace(/\s+/g,''); }
+function verifyBox(kind, icon, title, msg, rows){
+  const dl = rows ? `<dl class="verify-rows">${rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>` : '';
+  return `<div class="verify-box ${kind}"><div class="verify-title"><span>${icon}</span><span>${esc(title)}</span></div><p>${esc(msg)}</p>${dl}</div>`;
+}
+async function verifyCertificate(id){
+  const out = $('#verifyResult'), btn = $('#verifyBtn');
+  if(!id){ out.innerHTML = verifyBox('warn','⚠️','Enter a Certificate ID','Type the ID printed on the certificate, for example VLX-INT-1A2B3C.'); return; }
+  if(!CERT_ID_RE.test(id)){ out.innerHTML = verifyBox('bad','❌','Invalid Certificate ID','Certificate IDs look like VLX-INT-1A2B3C or VLX-FRL-1A2B3C. Please check the ID and try again.'); return; }
+  setBtnLoading(btn, true);
+  try{
+    const snap = await window.fb.getDoc(window.fb.doc(window.fb.db,'certificates', id));
+    if(!snap.exists()){
+      out.innerHTML = verifyBox('bad','❌','Certificate not found','No certificate with this ID was issued by Velnox Labs. Please check the ID, or contact us on Instagram if you think this is a mistake.');
+    } else {
+      const c = snap.data();
+      const rows = [['Name', c.name||'—'], ['Role', c.role||'—'], ['Domain', c.domain||'—'], ['Issued on', c.issuedOn||'—'], ['Certificate ID', id]];
+      if(c.status==='REVOKED') out.innerHTML = verifyBox('bad','🚫','Certificate revoked','This certificate was issued by Velnox Labs but has since been revoked and is no longer valid.', rows);
+      else out.innerHTML = verifyBox('ok','✅','Certificate is valid','This certificate was issued by Velnox Labs. The details below match our records.', rows);
+    }
+  }catch(err){
+    console.error(err);
+    out.innerHTML = verifyBox('warn','⚠️','Could not verify right now','Please check your internet connection and try again in a moment.');
+  }finally{
+    setBtnLoading(btn, false, 'Verify certificate');
+  }
+}
+
 function printCertificate(){
   const style = document.createElement('style');
   style.id = 'certPrintStyle';
