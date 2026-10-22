@@ -608,6 +608,13 @@ body{ background:var(--paper); }
 .field select option{ color:var(--ink); background:#fff; }
 .field select optgroup{ color:var(--ink-soft); font-weight:700; }
 .field input::placeholder, .field textarea::placeholder{ color:#7A7E9C; opacity:1; }
+/* logged-in profile pill + dropdown in the dark nav */
+#nav #userMenuBtn{ background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.30); color:#fff; }
+#nav #userMenuBtn:hover{ background:rgba(255,255,255,.18); }
+#nav #userMenuDrop{ background:#fff; border-color:var(--line-strong); }
+#nav #userMenuDrop a{ color:var(--ink); }
+#nav #userMenuDrop a:hover{ background:var(--surface); }
+#nav #userMenuDrop #signOutBtn{ color:var(--bad); }
 </style>
 <script>
 /* PWA manifest + icons built inline — no external manifest.json / icons needed */
@@ -2197,7 +2204,7 @@ function renderNavAuthArea(){
     estBtn.style.display='none';
     area.innerHTML = `
       <div style="position:relative;" id="userMenuWrap">
-        <button id="userMenuBtn" class="flex items-center gap-8" style="background:var(--surface); border:1px solid var(--line-strong); border-radius:999px; padding:6px 14px 6px 6px;">
+        <button id="userMenuBtn" class="flex items-center gap-8" style="background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.30); color:#fff; border-radius:999px; padding:6px 14px 6px 6px;">
           <span class="avatar" style="width:28px;height:28px;font-size:11px;">${esc(initials(state.profileName||state.user.displayName||state.user.email))}</span>
           <span class="small" style="font-weight:600;">${esc((state.profileName||state.user.displayName||state.user.email||'').split(' ')[0])}</span>
         </button>
