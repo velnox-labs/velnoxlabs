@@ -315,33 +315,40 @@ table.inv-table td{ padding:12px 6px; border-bottom:1px solid var(--line); borde
 
 /* ---- Certificate (landscape) ---- */
 .cert-doc{
+  --cert-blue:#1f4fd8; --cert-yellow:#f5b800;
   width:100%; aspect-ratio:1.414/1; max-width:920px; margin:0 auto;
-  background:
-    radial-gradient(circle at 8% 8%, rgba(79,70,229,.06), transparent 40%),
-    radial-gradient(circle at 92% 92%, rgba(124,58,237,.06), transparent 40%),
-    #fff;
-  border:10px solid var(--indigo); border-image:linear-gradient(135deg, var(--indigo), var(--violet)) 1;
-  padding:26px 40px; box-sizing:border-box; position:relative; display:flex; flex-direction:column;
-  font-family:inherit;
+  background:#f1f2f4; padding:2.4%; box-sizing:border-box; display:flex;
+  font-family:'Inter',system-ui,sans-serif; color:#111;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
-.cert-inner-border{ position:absolute; inset:14px; border:1.5px solid rgba(79,70,229,.35); pointer-events:none; }
-.cert-head{ display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:8px; }
-.cert-head img{ width:68px; height:68px; }
-.cert-brand{ font-family: var(--font-disp, inherit); font-weight:800; font-size:24px; letter-spacing:.04em; color:var(--ink); }
-.cert-eyebrow{ text-align:center; font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--violet-deep); font-weight:700; margin-top:2px; }
-.cert-title{ text-align:center; font-family: var(--font-disp, inherit); font-weight:800; font-size:clamp(30px,4.6vw,46px); margin:10px 0 6px; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.cert-sub{ text-align:center; font-size:15px; color:var(--muted); margin-bottom:auto; }
-.cert-body{ text-align:center; margin:auto 0; }
-.cert-name{ font-family: var(--font-disp, inherit); font-weight:800; font-size:clamp(32px,5.2vw,50px); color:var(--ink); border-bottom:2px solid var(--indigo); display:inline-block; padding:0 24px 8px; margin:8px 0 16px; }
-.cert-desc{ max-width:700px; margin:0 auto; font-size:17px; line-height:1.65; color:var(--ink); }
-.cert-desc strong{ color:var(--violet-deep); }
-.cert-foot{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:auto; padding-top:14px; }
-.cert-foot-block{ text-align:center; min-width:180px; }
-.cert-foot-line{ border-top:1.5px solid var(--ink); padding-top:6px; font-size:14px; font-weight:700; }
-.cert-foot-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
-.cert-no{ position:absolute; bottom:18px; left:40px; font-size:12px; color:var(--muted); font-family:'Courier New',monospace; }
-.cert-date{ position:absolute; bottom:18px; right:40px; font-size:12px; color:var(--muted); }
-@media (max-width:600px){ .cert-doc{ padding:18px 20px; aspect-ratio:auto; min-height:480px; } .cert-no, .cert-date{ position:static; text-align:center; margin-top:6px; } .cert-foot{ flex-direction:column; gap:14px; align-items:center; } }
+.cert-doc *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.cert-frame{
+  flex:1; position:relative; background:#fff; border:7px solid var(--cert-blue);
+  display:flex; flex-direction:column; align-items:center; overflow:hidden;
+  padding:3.2% 6% 0; box-sizing:border-box;
+}
+.cert-head{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:2.2%; }
+.cert-head img{ width:54px; height:54px; object-fit:contain; }
+.cert-brand{ font-family:'Space Grotesk',inherit; font-weight:700; font-size:22px; letter-spacing:.14em; color:#111; }
+.cert-title{ text-align:center; font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(20px,3.6vw,36px); letter-spacing:.14em; text-transform:uppercase; color:#000; margin:0 0 3%; }
+.cert-sub{ text-align:center; font-size:clamp(13px,1.8vw,17px); color:#222; margin:0 0 1.2%; }
+.cert-name{ font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(20px,3.2vw,32px); letter-spacing:.06em; text-transform:uppercase; color:var(--cert-blue); text-align:center; padding:0 10px 6px; border-bottom:2px solid #222; min-width:62%; max-width:100%; margin:0 auto 2.6%; box-sizing:border-box; }
+.cert-desc{ text-align:center; font-size:clamp(12px,1.7vw,16px); line-height:1.75; color:#111; margin:0; max-width:92%; }
+.cert-desc strong{ font-weight:800; color:#000; }
+.cert-foot{ width:100%; display:flex; justify-content:space-between; align-items:flex-end; margin-top:auto; padding-bottom:calc(3.2% + 22px); gap:16px; }
+.cert-details{ font-size:clamp(9px,1.2vw,12px); line-height:1.55; color:#222; text-align:left; }
+.cert-details b{ font-weight:700; }
+.cert-sign{ text-align:center; min-width:190px; }
+.cert-sign-name{ font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(13px,1.8vw,17px); color:#000; border-top:1.5px solid #222; padding-top:6px; }
+.cert-sign-sub{ font-size:clamp(10px,1.3vw,13px); color:#333; margin-top:1px; }
+.cert-stripe{ position:absolute; left:0; right:0; bottom:0; height:20px; background:var(--cert-blue); }
+.cert-stripe::before{ content:''; position:absolute; left:0; right:0; top:0; height:5px; background:var(--cert-yellow); }
+@media (max-width:600px){
+  .cert-doc{ aspect-ratio:auto; min-height:520px; padding:10px; }
+  .cert-frame{ padding:22px 16px 0; }
+  .cert-foot{ flex-direction:column; align-items:center; gap:14px; padding-bottom:34px; }
+  .cert-details{ text-align:center; }
+}
 .agr-clause{ margin-bottom:16px; page-break-inside:avoid; }
 .agr-clause .lbl{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--indigo); margin-bottom:5px; }
 .agr-clause p{ font-size:13px; line-height:1.55; color:var(--ink-soft); margin:0; }
@@ -564,7 +571,7 @@ tbody tr:hover td{ background:var(--surface); }
 .vx-final h2{ font-family:'Space Grotesk',sans-serif; font-size:clamp(24px,4vw,36px); } .vx-final p{ color:rgba(255,255,255,.75); margin:10px 0 22px; }
 /* ===== GLOBAL THEME (same as Home): navy + indigo, pill buttons, rounded cards ===== */
 :root{ --ink:#0B0D24; --ink-soft:#363A5C; --paper:#F6F7FD; --surface:#EEF0FB; --surface-2:#E3E6FA; --line:#E3E6F5; --line-strong:#CDD2EC;
-  --indigo:#5B5FEF; --violet:#6D6BF5; --violet-deep:#4A4DDB; --grad:linear-gradient(115deg,#4F52E8 0%,#6B6EF7 100%); --grad-soft:linear-gradient(115deg,rgba(91,95,239,.10),rgba(109,107,245,.10)); }
+  --indigo:#4F52E8; --violet:#5A5DEA; --violet-deep:#4043CF; --grad:linear-gradient(115deg,#4244D9 0%,#5A5DEA 100%); --grad-soft:linear-gradient(115deg,rgba(91,95,239,.10),rgba(109,107,245,.10)); }
 body{ background:var(--paper); }
 #nav{ background:rgba(10,12,31,.94); border-bottom:1px solid rgba(255,255,255,.08); }
 #nav .brand{ color:#fff; }
@@ -587,6 +594,8 @@ body{ background:var(--paper); }
 .app-sidebar{ background:#0A0C1F; border-right:0; } .app-sidebar a{ color:rgba(255,255,255,.75); } .app-sidebar a:hover{ background:rgba(255,255,255,.08); color:#fff; } .app-sidebar a.active{ background:#5B5FEF; color:#fff; }
 #page-dashboard .app-topbar{ background:radial-gradient(420px 180px at 90% 0%,rgba(91,95,239,.5),transparent),#0A0C1F; }
 @media (min-width:861px){ #page-dashboard .app-sidebar a{ color:var(--ink-soft); } #page-dashboard .app-sidebar a:hover{ background:#fff; color:var(--ink); } #page-dashboard .app-sidebar a.active{ background:#0A0C1F; color:#fff; border-color:#0A0C1F; } }
+.stars{ color:#A85800; }
+.vx-eb,.vx-why .vx-eb{ color:#9CA0FF; }
 </style>
 <script>
 /* PWA manifest + icons built inline — no external manifest.json / icons needed */
@@ -3515,37 +3524,38 @@ function openCertificateModal(a){
   const isIntern = a.role === 'Intern';
   const certTitle = isIntern ? 'Certificate of Internship' : 'Certificate of Freelancing';
   const roleLine = isIntern
-    ? `has successfully served as an <strong>Intern</strong> at Velnox Labs in the domain of <strong>${esc(a.skills||'Web Development')}</strong>, contributing meaningfully to our projects and demonstrating strong dedication and learning throughout the internship.`
-    : `has worked as a <strong>Freelancer</strong> with Velnox Labs in the domain of <strong>${esc(a.skills||'Web Development')}</strong>, delivering quality work with professionalism and reliability.`;
+    ? `has successfully completed an <strong>Internship</strong> at <strong>Velnox Labs</strong><br>in the domain of <strong>${esc(a.skills||'Web Development')}</strong>,<br>contributing meaningfully to live projects with dedication and a strong willingness to learn.`
+    : `has worked as a <strong>Freelancer</strong> with <strong>Velnox Labs</strong><br>in the domain of <strong>${esc(a.skills||'Web Development')}</strong>,<br>delivering quality work with professionalism and reliability.`;
   const certNo = a.certNo || generateCertNumber(a);
   const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
   $('#modalBox').classList.add('wide');
   openModal(`
     <div class="cert-doc" id="certDocBox">
-      <div class="cert-inner-border"></div>
-      <div class="cert-head">
-        <img src="${INVOICE_LOGO_URI}" alt="Velnox Labs">
-        <div class="cert-brand">VELNOX LABS</div>
-      </div>
-      <div class="cert-eyebrow">Web Development &amp; Digital Solutions</div>
-      <h1 class="cert-title">${esc(certTitle)}</h1>
-      <p class="cert-sub">This certificate is proudly presented to</p>
-      <div class="cert-body">
+      <div class="cert-frame">
+        <div class="cert-head">
+          <img src="${INVOICE_LOGO_URI}" alt="Velnox Labs">
+          <div class="cert-brand">VELNOX LABS</div>
+        </div>
+        <h1 class="cert-title">${esc(certTitle)}</h1>
+        <p class="cert-sub">This is to certify that</p>
         <div class="cert-name">${esc(a.name||'—')}</div>
-        <p class="cert-desc">In recognition that the above named ${roleLine}</p>
-      </div>
-      <div class="cert-foot">
-        <div class="cert-foot-block">
-          <div class="cert-foot-line">Velnox Labs</div>
-          <div class="cert-foot-sub">Issuing Authority</div>
+        <p class="cert-desc">${roleLine}</p>
+        <p class="cert-desc" style="margin-top:1.4%">Issued on <strong>${today}</strong> &nbsp;·&nbsp; a <strong>Velnox Labs</strong> certification</p>
+        <div class="cert-foot">
+          <div class="cert-details">
+            <div><b>Certificate No:</b> ${esc(certNo)}</div>
+            <div><b>Role:</b> ${esc(a.role||'—')}</div>
+            <div><b>Domain:</b> ${esc(a.skills||'Web Development')}</div>
+            ${a.email ? `<div><b>Email:</b> ${esc(a.email)}</div>` : ''}
+            ${a.instagram ? `<div><b>Instagram:</b> @${esc(a.instagram)}</div>` : ''}
+          </div>
+          <div class="cert-sign">
+            <div class="cert-sign-name">Velnox Labs</div>
+            <div class="cert-sign-sub">Authorised Signatory</div>
+          </div>
         </div>
-        <div class="cert-foot-block">
-          <div class="cert-foot-line">${today}</div>
-          <div class="cert-foot-sub">Date of Issue</div>
-        </div>
+        <div class="cert-stripe"></div>
       </div>
-      <div class="cert-no">Certificate No: ${esc(certNo)}</div>
-      <div class="cert-date">velnoxlabs.com</div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Close</button>
