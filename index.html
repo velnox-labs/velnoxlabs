@@ -315,39 +315,40 @@ table.inv-table td{ padding:12px 6px; border-bottom:1px solid var(--line); borde
 
 /* ---- Certificate (landscape) ---- */
 .cert-doc{
-  --cert-blue:#1f4fd8; --cert-yellow:#f5b800;
-  width:100%; aspect-ratio:1.414/1; max-width:920px; margin:0 auto;
-  background:#f1f2f4; padding:2.4%; box-sizing:border-box; display:flex;
-  font-family:'Inter',system-ui,sans-serif; color:#111;
+  --cb:#1e9ce6; --cy:#f5b800;
+  container-type:inline-size;
+  width:100%; aspect-ratio:1.414/1; max-width:920px; margin:0 auto; position:relative; box-sizing:border-box;
+  background:linear-gradient(to bottom, #fff 0, #fff 62%, var(--cy) 62%, var(--cy) 64.2%, var(--cb) 64.2%, var(--cb) 96.5%, #fff 96.5%);
+  font-family:Arial,Helvetica,'Liberation Sans',sans-serif; color:#111;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
-.cert-doc *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.cert-doc *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; box-sizing:border-box; }
 .cert-frame{
-  flex:1; position:relative; background:#fff; border:7px solid var(--cert-blue);
-  display:flex; flex-direction:column; align-items:center; overflow:hidden;
-  padding:3.2% 6% 0; box-sizing:border-box;
+  position:absolute; left:4.6%; right:4.6%; top:4%; bottom:3.5%;
+  background:#fff; border:.42cqw solid var(--cb);
+  display:flex; flex-direction:column; align-items:center; padding:3.2cqw 5cqw 0;
 }
-.cert-head{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:2.2%; }
-.cert-head img{ width:54px; height:54px; object-fit:contain; }
-.cert-brand{ font-family:'Space Grotesk',inherit; font-weight:700; font-size:22px; letter-spacing:.14em; color:#111; }
-.cert-title{ text-align:center; font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(20px,3.6vw,36px); letter-spacing:.14em; text-transform:uppercase; color:#000; margin:0 0 3%; }
-.cert-sub{ text-align:center; font-size:clamp(13px,1.8vw,17px); color:#222; margin:0 0 1.2%; }
-.cert-name{ font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(20px,3.2vw,32px); letter-spacing:.06em; text-transform:uppercase; color:var(--cert-blue); text-align:center; padding:0 10px 6px; border-bottom:2px solid #222; min-width:62%; max-width:100%; margin:0 auto 2.6%; box-sizing:border-box; }
-.cert-desc{ text-align:center; font-size:clamp(12px,1.7vw,16px); line-height:1.75; color:#111; margin:0; max-width:92%; }
-.cert-desc strong{ font-weight:800; color:#000; }
-.cert-foot{ width:100%; display:flex; justify-content:space-between; align-items:flex-end; margin-top:auto; padding-bottom:calc(3.2% + 22px); gap:16px; }
-.cert-details{ font-size:clamp(9px,1.2vw,12px); line-height:1.55; color:#222; text-align:left; }
-.cert-details b{ font-weight:700; }
-.cert-sign{ text-align:center; min-width:190px; }
-.cert-sign-name{ font-family:'Space Grotesk',inherit; font-weight:800; font-size:clamp(13px,1.8vw,17px); color:#000; border-top:1.5px solid #222; padding-top:6px; }
-.cert-sign-sub{ font-size:clamp(10px,1.3vw,13px); color:#333; margin-top:1px; }
-.cert-stripe{ position:absolute; left:0; right:0; bottom:0; height:20px; background:var(--cert-blue); }
-.cert-stripe::before{ content:''; position:absolute; left:0; right:0; top:0; height:5px; background:var(--cert-yellow); }
+.cert-head{ display:flex; align-items:center; justify-content:center; gap:1.3cqw; height:9.5cqw; }
+.cert-head img{ height:8cqw; width:8cqw; object-fit:contain; }
+.cert-brand{ font-weight:700; font-size:3.4cqw; letter-spacing:.12em; color:#222; }
+.cert-title{ margin:3.6cqw 0 0; text-align:center; font-weight:700; font-size:2.9cqw; letter-spacing:.2em; text-transform:uppercase; color:#111; line-height:1.2; }
+.cert-sub{ margin:3.2cqw 0 0; text-align:center; font-size:1.75cqw; color:#111; }
+.cert-name{ margin:2.2cqw 0 0; text-align:center; font-weight:700; font-size:2.6cqw; letter-spacing:.04em; text-transform:uppercase; color:var(--cb); width:100%; padding-bottom:1.5cqw; border-bottom:.2cqw solid #555; }
+.cert-lines{ margin-top:2.4cqw; text-align:center; font-size:1.65cqw; line-height:1; color:#111; }
+.cert-lines p{ margin:0 0 1.25cqw; line-height:1.5; }
+.cert-lines strong{ font-weight:700; color:#000; }
+.cert-foot{ position:absolute; left:3.6cqw; right:4.6cqw; bottom:3.4cqw; display:flex; justify-content:space-between; align-items:flex-end; }
+.cert-details{ font-size:1.25cqw; line-height:1.9; color:#111; text-align:left; }
+.cert-sign{ text-align:center; font-size:1.55cqw; line-height:1.45; color:#111; }
+.cert-sign b{ display:block; font-weight:700; }
 @media (max-width:600px){
-  .cert-doc{ aspect-ratio:auto; min-height:520px; padding:10px; }
-  .cert-frame{ padding:22px 16px 0; }
-  .cert-foot{ flex-direction:column; align-items:center; gap:14px; padding-bottom:34px; }
-  .cert-details{ text-align:center; }
+  .cert-doc{ aspect-ratio:auto; min-height:560px; container-type:normal; background:var(--cb); padding:12px; }
+  .cert-frame{ position:static; border:3px solid #fff; border-radius:0; padding:20px 14px 20px; }
+  .cert-head{ height:auto; gap:10px; } .cert-head img{ width:48px; height:48px; } .cert-brand{ font-size:18px; }
+  .cert-title{ font-size:17px; margin-top:18px; } .cert-sub{ font-size:14px; margin-top:16px; }
+  .cert-name{ font-size:20px; margin-top:10px; padding-bottom:8px; } .cert-lines{ font-size:13px; margin-top:14px; } .cert-lines p{ margin-bottom:6px; }
+  .cert-foot{ position:static; flex-direction:column; gap:14px; align-items:center; margin-top:18px; }
+  .cert-details{ font-size:11px; text-align:center; } .cert-sign{ font-size:13px; }
 }
 .agr-clause{ margin-bottom:16px; page-break-inside:avoid; }
 .agr-clause .lbl{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--indigo); margin-bottom:5px; }
@@ -3523,9 +3524,10 @@ function generateCertNumber(app){
 function openCertificateModal(a){
   const isIntern = a.role === 'Intern';
   const certTitle = isIntern ? 'Certificate of Internship' : 'Certificate of Freelancing';
-  const roleLine = isIntern
-    ? `has successfully completed an <strong>Internship</strong> at <strong>Velnox Labs</strong><br>in the domain of <strong>${esc(a.skills||'Web Development')}</strong>,<br>contributing meaningfully to live projects with dedication and a strong willingness to learn.`
-    : `has worked as a <strong>Freelancer</strong> with <strong>Velnox Labs</strong><br>in the domain of <strong>${esc(a.skills||'Web Development')}</strong>,<br>delivering quality work with professionalism and reliability.`;
+  const domain = esc(a.skills||'Web Development');
+  const firstLine = isIntern
+    ? `Successfully completed an <strong>Internship</strong> in <strong>${domain}</strong>`
+    : `Successfully worked as a <strong>Freelancer</strong> in <strong>${domain}</strong>`;
   const certNo = a.certNo || generateCertNumber(a);
   const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
   $('#modalBox').classList.add('wide');
@@ -3539,22 +3541,25 @@ function openCertificateModal(a){
         <h1 class="cert-title">${esc(certTitle)}</h1>
         <p class="cert-sub">This is to certify that</p>
         <div class="cert-name">${esc(a.name||'—')}</div>
-        <p class="cert-desc">${roleLine}</p>
-        <p class="cert-desc" style="margin-top:1.4%">Issued on <strong>${today}</strong> &nbsp;·&nbsp; a <strong>Velnox Labs</strong> certification</p>
+        <div class="cert-lines">
+          <p>${firstLine}</p>
+          <p>Issued on <strong>${today}</strong>, a Velnox Labs initiative</p>
+          <p>Implemented by <strong>Velnox Labs</strong></p>
+          <p>Web Development &amp; Digital Solutions</p>
+        </div>
         <div class="cert-foot">
           <div class="cert-details">
-            <div><b>Certificate No:</b> ${esc(certNo)}</div>
-            <div><b>Role:</b> ${esc(a.role||'—')}</div>
-            <div><b>Domain:</b> ${esc(a.skills||'Web Development')}</div>
-            ${a.email ? `<div><b>Email:</b> ${esc(a.email)}</div>` : ''}
-            ${a.instagram ? `<div><b>Instagram:</b> @${esc(a.instagram)}</div>` : ''}
+            <div>Certificate ID: ${esc(certNo)}</div>
+            <div>Role: ${esc(a.role||'—')}</div>
+            <div>Domain: ${domain}</div>
+            ${a.email ? `<div>Email ID: ${esc(a.email)}</div>` : ''}
+            ${a.instagram ? `<div>Instagram: @${esc(a.instagram)}</div>` : ''}
           </div>
           <div class="cert-sign">
-            <div class="cert-sign-name">Velnox Labs</div>
-            <div class="cert-sign-sub">Authorised Signatory</div>
+            <b>Velnox Labs</b>
+            <div>Authorised Signatory</div>
           </div>
         </div>
-        <div class="cert-stripe"></div>
       </div>
     </div>
     <div class="modal-actions">
